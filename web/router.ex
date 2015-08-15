@@ -16,6 +16,9 @@ defmodule Handiman.Router do
   scope "/", Handiman do
     pipe_through :browser # Use the default browser stack
 
+    get  "/register", RegistrationController, :new
+    post "/register", RegistrationController, :create
+
     get "/", PageController, :index
     resources "/users", UserController
   end
