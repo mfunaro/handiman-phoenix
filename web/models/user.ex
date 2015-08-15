@@ -5,11 +5,13 @@ defmodule Handiman.User do
     field :name, :string
     field :email, :string
     field :handicap, :integer
+    field :encrypted_password, :string
+    field :password, :string, virtual: true
 
     timestamps
   end
 
-  @required_fields ~w(name email handicap)
+  @required_fields ~w(email password)
   @optional_fields ~w()
 
   @doc """
@@ -21,5 +23,8 @@ defmodule Handiman.User do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> validate_unique(:email, on: Handiman.Repo, downcase: true)
+    |> validate_format(:email, ~r/@/) # TODO more robust email validation
+    |> validate_length(:password, min: 5)
   end
 end
