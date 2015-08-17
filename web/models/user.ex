@@ -7,11 +7,12 @@ defmodule Handiman.User do
     field :handicap, :integer
     field :encrypted_password, :string
     field :password, :string, virtual: true
+    field :password_confirmation, :string, virtual: true
 
     timestamps
   end
 
-  @required_fields ~w(email password)
+  @required_fields ~w(name email password password_confirmation)
   @optional_fields ~w()
 
   @doc """
@@ -26,5 +27,6 @@ defmodule Handiman.User do
     |> validate_unique(:email, on: Handiman.Repo, downcase: true)
     |> validate_format(:email, ~r/@/) # TODO more robust email validation
     |> validate_length(:password, min: 5)
+    |> validate_confirmation(:password)
   end
 end

@@ -11,13 +11,13 @@ defmodule Handiman.RegistrationController do
     changeset = User.changeset(%User{}, user_params)
 
     if changeset.valid? do
-      user = Handiman.Registration.create(changeset, Handiman.Repo)
+      {_, user} = Handiman.Registration.create(changeset, Handiman.Repo)
       conn
-      |> put_flash(:info, "Your account was created")
+      |> put_session(:current_user, user.id)
+      |> put_flash(:info, "Your account wa`s created")
       |> redirect(to: "/")
     else
       conn
-      |> put_flash(:info, "Unable to create account")
       |> render("new.html", changeset: changeset)
     end
   end

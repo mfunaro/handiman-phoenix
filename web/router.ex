@@ -19,6 +19,10 @@ defmodule Handiman.Router do
     get  "/register", RegistrationController, :new
     post "/register", RegistrationController, :create
 
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
+
     get "/", PageController, :index
     resources "/users", UserController
   end

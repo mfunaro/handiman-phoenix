@@ -4,7 +4,7 @@ defmodule Handiman.Registration do
   def create(changeset, repo) do
     changeset
     |> put_change(:encrypted_password, hashed_password(changeset.params["password"]))
-    |> repo.insert()
+    |> repo.insert
   end
 
   defp hashed_password(password) do
