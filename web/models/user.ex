@@ -12,8 +12,8 @@ defmodule Handiman.User do
     timestamps
   end
 
-  @required_fields ~w(name email password password_confirmation)
-  @optional_fields ~w()
+  @required_fields ~w(name email)
+  @optional_fields ~w(password password_confirmation)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -22,11 +22,24 @@ defmodule Handiman.User do
   with no validation performed.
   """
   def changeset(model, params \\ :empty) do
-    model
-    |> cast(params, @required_fields, @optional_fields)
-    |> validate_unique(:email, on: Handiman.Repo, downcase: true)
-    |> validate_format(:email, ~r/@/) # TODO more robust email validation
-    |> validate_length(:password, min: 5)
-    |> validate_confirmation(:password)
+      model
+      |> cast(params, @required_fields, @optional_fields)
+      |> validate_unique(:email, on: Handiman.Repo, downcase: true)
+      |> validate_format(:email, ~r/@/) # TODO more robust email validation
+      |> validate_length(:password, min: 5)
+      |> validate_confirmation(:password)
+  end
+
+  # When we are updating the user, we don't have to give password and password_confirmation
+  def update_changeset(model, params \\ :empty) do
+    if params != :empty && params[:password] != "" do
+      model
+      |> changeset(params)
+    else
+      model
+      |> cast(params, @required_fields, @optional_fields)
+      |> validate_unique(:email, on: Handiman.Repo, downcase: true)
+      |> validate_format(:email, ~r/@/) # TODO more robust email validation
+    end
   end
 end
