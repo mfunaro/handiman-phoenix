@@ -13,7 +13,7 @@ defmodule Handiman.User do
   end
 
   @required_fields ~w(name email)
-  @optional_fields ~w(password password_confirmation)
+  @optional_fields ~w(handicap password password_confirmation)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -30,9 +30,15 @@ defmodule Handiman.User do
       |> validate_confirmation(:password)
   end
 
-  # When we are updating the user, we don't have to give password and password_confirmation
+  @doc """
+  Creates a changeset based on the `model` and `params`. But goes further than changeset as it check if there is a password
+  supplied. If so, delegate to changeset to run full validations, otherwise run subset of validations.
+
+  If no params are provided, an invalid changeset is returned
+  with no validation performed.
+  """
   def update_changeset(model, params \\ :empty) do
-    if params != :empty && params[:password] != "" do
+    if params[:password] != "" do
       model
       |> changeset(params)
     else
