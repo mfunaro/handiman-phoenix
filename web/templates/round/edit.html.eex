@@ -1,0 +1,6 @@
+<h2>Edit round</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: user_round_path(@conn, :update, current_user(@conn), @round) %>
+
+<%= link "Back", to: user_round_path(@conn, :index, current_user(@conn)) %>

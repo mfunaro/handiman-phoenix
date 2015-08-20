@@ -1,0 +1,18 @@
+<h2>Show round</h2>
+
+<ul>
+
+  <li>
+    <strong>Score:</strong>
+    <%= @round.score %>
+  </li>
+
+  <li>
+    <strong>Holes:</strong>
+    <%= @round.holes %>
+  </li>
+</ul>
+
+
+<%= link "Edit", to: user_round_path(@conn, :edit, current_user(@conn), @round) %>
+<%= link "Back", to: user_round_path(@conn, :index, current_user(@conn)) %>

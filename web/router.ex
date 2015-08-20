@@ -24,7 +24,9 @@ defmodule Handiman.Router do
     delete "/logout", SessionController, :delete
 
     get "/", PageController, :index
-    resources "/users", UserController
+    resources "/users", UserController do
+      resources "/rounds", RoundController
+    end
   end
 
   # Other scopes may use custom stacks.
