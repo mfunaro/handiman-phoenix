@@ -16,7 +16,7 @@ defmodule Handiman.RegistrationController do
       {_, user} = Handiman.Registration.create(changeset, Handiman.Repo)
       conn
       |> put_session(:current_user, user.id)
-      |> put_flash(:info, "Your account wa`s created")
+      |> put_flash(:info, "Your account was created")
       |> redirect(to: "/")
     else
       conn
