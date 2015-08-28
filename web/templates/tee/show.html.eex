@@ -1,0 +1,44 @@
+<h2>Show tee</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @tee.name %>
+  </li>
+
+  <li>
+    <strong>Usga course rating:</strong>
+    <%= @tee.usga_course_rating %>
+  </li>
+
+  <li>
+    <strong>Slope rating:</strong>
+    <%= @tee.slope_rating %>
+  </li>
+
+  <li>
+    <strong>Front nine:</strong>
+    <%= @tee.front_nine %>
+  </li>
+
+  <li>
+    <strong>Back nine:</strong>
+    <%= @tee.back_nine %>
+  </li>
+
+  <li>
+    <strong>Bogey rating:</strong>
+    <%= @tee.bogey_rating %>
+  </li>
+
+  <li>
+    <strong>Gender:</strong>
+    <%= @tee.gender %>
+  </li>
+
+</ul>
+
+
+<%= link "Edit", to: course_tee_path(@conn, :edit, @course, @tee) %>
+<%= link "Back", to: course_tee_path(@conn, :index, @course) %>

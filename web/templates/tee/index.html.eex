@@ -1,0 +1,38 @@
+<h2>Listing tees</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Usga course rating</th>
+      <th>Slope rating</th>
+      <th>Front nine</th>
+      <th>Back nine</th>
+      <th>Bogey rating</th>
+      <th>Gender</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for tee <- @tees do %>
+    <tr>
+      <td><%= tee.name %></td>
+      <td><%= tee.usga_course_rating %></td>
+      <td><%= tee.slope_rating %></td>
+      <td><%= tee.front_nine %></td>
+      <td><%= tee.back_nine %></td>
+      <td><%= tee.bogey_rating %></td>
+      <td><%= tee.gender %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: course_tee_path(@conn, :show, @course, tee), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: course_tee_path(@conn, :edit, @course, tee), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: course_tee_path(@conn, :delete, @course, tee), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New tee", to: course_tee_path(@conn, :new, @course) %>

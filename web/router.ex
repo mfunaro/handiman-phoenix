@@ -27,6 +27,9 @@ defmodule Handiman.Router do
     resources "/users", UserController do
       resources "/rounds", RoundController
     end
+    resources "/courses", CourseController do
+      resources "/tees", TeeController
+    end
   end
 
   # Other scopes may use custom stacks.

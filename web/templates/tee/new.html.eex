@@ -1,0 +1,6 @@
+<h2>New tee</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: course_tee_path(@conn, :create, @course, @tee) %>
+
+<%= link "Back", to: course_tee_path(@conn, :index, @course) %>
