@@ -26,9 +26,9 @@
       <td><%= tee.gender %></td>
 
       <td class="text-right">
-        <%= link "Show", to: course_tee_path(@conn, :show, @course, tee), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: course_tee_path(@conn, :edit, @course, tee), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: course_tee_path(@conn, :delete, @course, tee), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Show", to: course_tee_path(@conn, :show, tee.course_id, tee.id), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: course_tee_path(@conn, :edit, tee.course_id, tee.id), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: course_tee_path(@conn, :delete, tee.course_id, tee.id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>

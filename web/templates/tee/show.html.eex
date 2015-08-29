@@ -40,5 +40,5 @@
 </ul>
 
 
-<%= link "Edit", to: course_tee_path(@conn, :edit, @course, @tee) %>
-<%= link "Back", to: course_tee_path(@conn, :index, @course) %>
+<%= link "Edit", to: course_tee_path(@conn, :edit, @tee.course_id, @tee) %>
+<%= link "Back", to: course_tee_path(@conn, :index, @tee.course_id) %>
