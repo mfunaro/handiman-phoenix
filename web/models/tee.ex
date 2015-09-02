@@ -11,6 +11,7 @@ defmodule Handiman.Tee do
     field :gender, :string
 
     belongs_to :course, Handiman.Course
+    has_many :round, Hamdiman.Round
     timestamps
   end
 

@@ -5,6 +5,7 @@ defmodule Handiman.Round do
     field :score, :integer
     field :holes, :integer
     belongs_to :user, Handiman.User
+    belongs_to :tee, Handiman.Tee
 
     timestamps
   end
@@ -21,5 +22,9 @@ defmodule Handiman.Round do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+  
+  def with_course(query) do
+    from q in query, preload: [tee: :course]
   end
 end
