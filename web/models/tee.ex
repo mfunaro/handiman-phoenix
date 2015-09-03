@@ -3,11 +3,11 @@ defmodule Handiman.Tee do
 
   schema "tees" do
     field :name, :string
-    field :usga_course_rating, :decimal
+    field :usga_course_rating, :float
     field :slope_rating, :integer
     field :front_nine, :string
     field :back_nine, :string
-    field :bogey_rating, :decimal
+    field :bogey_rating, :float
     field :gender, :string
 
     belongs_to :course, Handiman.Course

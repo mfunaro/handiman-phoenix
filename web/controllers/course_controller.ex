@@ -2,6 +2,7 @@ defmodule Handiman.CourseController do
   use Handiman.Web, :controller
 
   alias Handiman.Course
+  alias Handiman.Tee
 
   plug :scrub_params, "course" when action in [:create, :update]
 
@@ -26,6 +27,13 @@ defmodule Handiman.CourseController do
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
+  end
+
+  def course_tees(conn, %{"id" => id}) do
+    course = Course
+      |> Course.with_tees
+      |> Repo.get!(id)
+    render conn, "tees.json", data: course.tees
   end
 
   def show(conn, %{"id" => id}) do

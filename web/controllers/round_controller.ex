@@ -1,8 +1,11 @@
 defmodule Handiman.RoundController do
   use Handiman.Web, :controller
   import Ecto.Query, only: [where: 3, from: 2]
+  import Ecto.Changeset, only: [put_change: 3]
   require Logger
   alias Handiman.Round
+  alias Handiman.Tee
+  alias Handiman.Course
 
   plug :scrub_params, "round" when action in [:create, :update]
 
@@ -15,11 +18,19 @@ defmodule Handiman.RoundController do
 
   def new(conn, %{"user_id" => user_id}) do
     changeset = Round.changeset(%Round{})
-    render(conn, "new.html", changeset: changeset)
+    course_query = from c in Course, select: %{"course_id"=>c.id, "course_name"=>c.name}
+    tee_query = from t in Tee, select: %{"tee_id"=>t.id, "course_id"=>t.course_id}
+    tees = Repo.all(tee_query)
+    courses = Repo.all(course_query)
+    IO.inspect courses
+    render(conn, "new.html", changeset: changeset, tees: tees, courses: courses)
   end
 
   def create(conn, %{"round" => round_params, "user_id" => user_id}) do
-    changeset = Round.changeset(%Round{}, Map.merge(round_params, %{"user_id"=> user_id}))
+    tee = Repo.get!(Tee, round_params["tee_id"])
+    diff = Round.calc_differential(round_params["score"], tee.usga_course_rating, tee.slope_rating)
+      |> Float.round(2)
+    changeset = Round.changeset(%Round{}, Map.merge(round_params, %{"user_id"=> user_id, "differential"=> diff}))
 
     case Repo.insert(changeset) do
       {:ok, round} ->

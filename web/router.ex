@@ -30,10 +30,12 @@ defmodule Handiman.Router do
     resources "/courses", CourseController do
       resources "/tees", TeeController
     end
+
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Handiman do
-  #   pipe_through :api
-  # end
+  #Other scopes may use custom stacks.
+  scope "/api", Handiman do
+    pipe_through :api
+    get "/course/:id/tees", CourseController, :course_tees
+  end
 end

@@ -4,11 +4,11 @@ defmodule Handiman.Repo.Migrations.CreateTee do
   def change do
     create table(:tees) do
       add :name, :string
-      add :usga_course_rating, :decimal
+      add :usga_course_rating, :float
       add :slope_rating, :integer
       add :front_nine, :string
       add :back_nine, :string
-      add :bogey_rating, :decimal
+      add :bogey_rating, :float
       add :gender, :string
       add :course_id, references(:courses)
 
