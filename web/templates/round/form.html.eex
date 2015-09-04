@@ -58,9 +58,10 @@
 
   function send_request(){
     var course_id = $('#round_course_name').find(":selected").val();
+    var url = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     $.ajax({
       type: "GET",
-      url: "http://localhost:4000/api/course/" + course_id + "/tees",
+      url: url + "/api/course/" + course_id + "/tees",
       cache: false,
       success: function(data){
         var select = document.getElementById('round_tee_id');
