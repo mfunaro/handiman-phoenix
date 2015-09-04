@@ -18,11 +18,7 @@ defmodule Handiman.RoundController do
 
   def new(conn, %{"user_id" => user_id}) do
     changeset = Round.changeset(%Round{})
-    course_query = from c in Course, select: %{"course_id"=>c.id, "course_name"=>c.name}
-    tee_query = from t in Tee, select: %{"tee_id"=>t.id, "course_id"=>t.course_id}
-    tees = Repo.all(tee_query)
-    courses = Repo.all(course_query)
-    IO.inspect courses
+    {courses, tees} = retrieve_courses_and_tees
     render(conn, "new.html", changeset: changeset, tees: tees, courses: courses)
   end
 
@@ -38,7 +34,8 @@ defmodule Handiman.RoundController do
         |> put_flash(:info, "Round created successfully.")
         |> redirect(to: user_round_path(conn, :index, round.user_id))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        {courses, tees} = retrieve_courses_and_tees
+        render(conn, "new.html", changeset: changeset, tees: tees, courses: courses)
     end
   end
 
@@ -79,5 +76,13 @@ defmodule Handiman.RoundController do
     conn
     |> put_flash(:info, "Round deleted successfully.")
     |> redirect(to: user_round_path(conn, :index, round.user))
+  end
+
+  defp retrieve_courses_and_tees() do
+    course_query = from c in Course, select: %{"course_id"=>c.id, "course_name"=>c.name}
+    tee_query = from t in Tee, select: %{"tee_id"=>t.id, "course_id"=>t.course_id}
+    tees = Repo.all(tee_query)
+    courses = Repo.all(course_query)
+    {courses, tees}
   end
 end

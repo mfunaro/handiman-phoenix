@@ -24,9 +24,60 @@
     <%= select f, :course_name, course_names(@courses), prompt: "Course" %>
   </div>
 
-
+  <div class="form-group">
+    <%= select f, :tee_id, [], prompt: "Tee" %>
+  </div>
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  function setupCourseSelect(){
+    var courseSelect = document.getElementById('round_course_name');
+    var courses = new Object();
+    for (i = 1; i < courseSelect.length; i += 2) {
+      courses[courseSelect.options[i].value] = courseSelect.options[i + 1].value;
+    }
+    course_keys =  Object.keys(courses);
+    // Clear out the options
+    var i;
+    for(i = courseSelect.options.length-1; i >= 1; i--){ courseSelect.remove(i); }
+
+    // Add new options
+    for(var i = 0; i < course_keys.length; ++i){
+      var key = course_keys[i]
+      var opt = document.createElement('option');
+      opt.value = courses[key];
+      opt.innerHTML = key;
+      courseSelect.appendChild(opt);
+    }
+    courseSelect.onchange = send_request;
+  }
+
+  function send_request(){
+    var course_id = $('#round_course_name').find(":selected").val();
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:4000/api/course/" + course_id + "/tees",
+      cache: false,
+      success: function(data){
+        var select = document.getElementById('round_tee_id');
+
+        // Clear out the options
+        var i;
+        for(i = select.options.length-1; i >= 0; i--){ select.remove(i); }
+
+        // Add new options
+        for(var i = 0; i < data.length; ++i){
+          var opt = document.createElement('option');
+          opt.value = data[i].id;
+          opt.innerHTML = data[i].name;
+          select.appendChild(opt);
+        }
+      }
+    });
+  }
+  document.onload = setupCourseSelect();
+</script>
