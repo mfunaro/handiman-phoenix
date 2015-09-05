@@ -23,6 +23,12 @@ defmodule Handiman.RoundController do
   end
 
   def create(conn, %{"round" => round_params, "user_id" => user_id}) do
+    {courses, tees} = retrieve_courses_and_tees
+    if round_params["tee_id"] == nil do
+      conn
+        |> put_flash(:error, "You must select which tee you played from")
+        |> render("new.html", changeset: Round.changeset(%Round{}, round_params), tees: tees, courses: courses)
+    end
     tee = Repo.get!(Tee, round_params["tee_id"])
     diff = Round.calc_differential(round_params["score"], tee.usga_course_rating, tee.slope_rating)
       |> Float.round(2)
@@ -34,7 +40,6 @@ defmodule Handiman.RoundController do
         |> put_flash(:info, "Round created successfully.")
         |> redirect(to: user_round_path(conn, :index, round.user_id))
       {:error, changeset} ->
-        {courses, tees} = retrieve_courses_and_tees
         render(conn, "new.html", changeset: changeset, tees: tees, courses: courses)
     end
   end
