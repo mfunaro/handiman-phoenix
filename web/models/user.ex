@@ -1,6 +1,27 @@
 defmodule Handiman.User do
   use Handiman.Web, :model
 
+  alias Handiman.Repo
+
+  @differentials %{
+    5 => 1,
+    6 => 1,
+    7 => 2,
+    8 =>2,
+    9 => 3,
+    10 => 3,
+    11 => 4,
+    12 => 4,
+    13 => 5,
+    14 => 5,
+    15 => 6,
+    16 => 6,
+    17 => 7,
+    18 => 8,
+    19 => 9,
+    20 => 10
+  }
+
   schema "users" do
     field :name, :string
     field :email, :string
@@ -48,5 +69,24 @@ defmodule Handiman.User do
       |> validate_unique(:email, on: Handiman.Repo, downcase: true)
       |> validate_format(:email, ~r/@/) # TODO more robust email validation
     end
+  end
+
+  def calculate_handicap(count, user_id) do
+    if count < 5 do
+      {:error, "User needs more rounds before a handicap can be calculated"}
+    else
+      if count > 20, do: count = 20 # If the number of rounds is greater than 20 just use 20. 
+      num_differentials = @differentials[count]
+      query = from u in Handiman.User, join: r in assoc(u, :rounds), where: r.user_id == u.id, where: u.id == "#{user_id}", select: r.differential, order_by: [desc: r.inserted_at], limit: "#{num_differentials}"
+      diffs = Repo.all(query)
+      # TODO move sum into query.
+      {_, diff_sum} = Enum.map_reduce(diffs, 0, fn(x, acc) -> {x, acc + x} end)
+      {:ok, Float.floor((diff_sum/num_differentials) * 0.96, 1)}
+    end
+  end
+
+  def round_count(query, user_id) do
+    query = from u in query, join: r in assoc(u, :rounds), where: r.user_id == "#{user_id}", select: count(r.id)
+    Repo.one(query)
   end
 end

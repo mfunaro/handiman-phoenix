@@ -30,7 +30,13 @@ defmodule Handiman.UserController do
 
   def show(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
-    render(conn, "show.html", user: user)
+    case User |> User.round_count(id) |> User.calculate_handicap(id) do
+      {:ok, handicap} -> render(conn, "show.html", user: user, handicap: handicap)
+      {:error, error} ->
+        conn
+          |> put_flash(:info, error)
+          |> render("show.html", user: user, handicap: "N/A")
+    end
   end
 
   def edit(conn, %{"id" => id}) do
@@ -63,5 +69,11 @@ defmodule Handiman.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
+  end
+
+  defp calculate_handicap(id) do
+    count = User |> User.round_count
+    differentials = User |> User.round_differentials(count, id)
+
   end
 end

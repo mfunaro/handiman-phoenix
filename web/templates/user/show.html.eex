@@ -14,7 +14,7 @@
 
   <li>
     <strong>Handicap:</strong>
-    <%= @user.handicap %>
+    <%= @handicap %>
   </li>
 
 </ul>
