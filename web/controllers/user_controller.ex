@@ -70,10 +70,4 @@ defmodule Handiman.UserController do
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
   end
-
-  defp calculate_handicap(id) do
-    count = User |> User.round_count
-    differentials = User |> User.round_differentials(count, id)
-
-  end
 end
