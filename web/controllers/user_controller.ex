@@ -30,7 +30,7 @@ defmodule Handiman.UserController do
 
   def show(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
-    case User |> User.round_count(id) |> User.calculate_handicap(id) do
+    case User.round_count(id) |> User.calculate_handicap(id) do
       {:ok, handicap} -> render(conn, "show.html", user: user, handicap: handicap)
       {:error, error} ->
         conn
