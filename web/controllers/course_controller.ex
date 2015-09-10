@@ -5,6 +5,7 @@ defmodule Handiman.CourseController do
   alias Handiman.Tee
 
   plug :scrub_params, "course" when action in [:create, :update]
+  plug Handiman.Plugs.Admin when action in [:create, :update]
 
   def index(conn, _params) do
     courses = Repo.all(Course)
@@ -37,8 +38,12 @@ defmodule Handiman.CourseController do
   end
 
   def show(conn, %{"id" => id}) do
-    course = Repo.get!(Course, id)
-    render(conn, "show.html", course: course)
+    course = Course
+      |> Course.with_tees
+      |> Repo.get!(id)
+      IO.inspect course
+      IO.inspect course.tees
+    render(conn, "show.html", course: course, tees: course.tees)
   end
 
   def edit(conn, %{"id" => id}) do

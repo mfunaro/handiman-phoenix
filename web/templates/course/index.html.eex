@@ -19,8 +19,10 @@
 
       <td class="text-right">
         <%= link "Show", to: course_path(@conn, :show, course), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: course_path(@conn, :edit, course), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: course_path(@conn, :delete, course), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= if current_user(@conn).admin == true do %>
+          <%= link "Edit", to: course_path(@conn, :edit, course), class: "btn btn-default btn-xs" %>
+          <%= link "Delete", to: course_path(@conn, :delete, course), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <% end %>
       </td>
     </tr>
 <% end %>

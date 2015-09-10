@@ -1,24 +1,30 @@
-<h2>Show course</h2>
+<h2><%= @course.name %></h2>
+  <div>
+    <p><%= @course.city %>, <%= @course.state %></p>
+  </div>
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Tee Name</th>
+          <th>Course Rating</th>
+          <th>Slope Rating</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      <%= for tee <- @tees do %>
+          <tr>
+            <td><%= tee.name %></td>
+            <td><%= tee.usga_course_rating %></td>
+            <td><%= tee.slope_rating %></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
 
-<ul>
+<%= if current_user(@conn).admin == true do %>
+  <%= link "Edit", to: course_path(@conn, :edit, @course) %>
+<% end %>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @course.name %>
-  </li>
-
-  <li>
-    <strong>City:</strong>
-    <%= @course.city %>
-  </li>
-
-  <li>
-    <strong>State:</strong>
-    <%= @course.state %>
-  </li>
-
-</ul>
-
-
-<%= link "Edit", to: course_path(@conn, :edit, @course) %>
 <%= link "Back", to: course_path(@conn, :index) %>

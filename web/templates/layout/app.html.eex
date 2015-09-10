@@ -10,8 +10,26 @@
     <title>Handiman</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Handiman</a>
+      </div>
+      <div class="nav nav-pills pull-right">
 
+         <%= if logged_in?(@conn) do %>
+           <li><%= link "#{current_user(@conn).email}", to: user_path(@conn, :show, current_user(@conn)), method: :get %></li>
+           <li><%= link "Logout", to: session_path(@conn, :delete), method: :delete %></li>
+         <% else %>
+           <li><%= link "Login",    to: "/login" %></li>
+           <li><%= link "Register", to: "/register" %></li>
+         <% end %>
+     </div>
+    </div><!-- /.container-fluid -->
+  </nav>
   <body>
+
     <div class="container" role="main">
       <p class="alert alert-info alert-dismissable" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger alert-dismissable" role="alert"><%= get_flash(@conn, :error) %></p>

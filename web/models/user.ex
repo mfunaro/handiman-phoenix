@@ -27,6 +27,7 @@ defmodule Handiman.User do
     field :email, :string
     field :handicap, :integer
     field :encrypted_password, :string
+    field :admin, :boolean
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
 

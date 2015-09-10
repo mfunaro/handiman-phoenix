@@ -32,6 +32,7 @@ defmodule Handiman.Web do
 
       import Handiman.Router.Helpers
       import Handiman.Session, only: [current_user: 1, logged_in?: 1]
+      alias Handiman.Auth
     end
   end
 
