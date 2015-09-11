@@ -1,0 +1,28 @@
+{
+  "name": "handiman",
+  "dependencies": {
+    "jquery": "~ 2.1",
+    "bootstrap":">=3.3.5"
+  },
+  "version": "0.0.1",
+  "homepage": "https://github.com/mfunaro/handiman-phoenix",
+  "authors": [
+    "mfunaro <mfunaro@gmail.com>"
+  ],
+  "description": "Simple free handicap tracking",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node",
+    "yui"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
