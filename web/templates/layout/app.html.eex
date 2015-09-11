@@ -11,9 +11,20 @@
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
   <body>
-    <div class="container" role="main">
-      <p class="alert alert-info alert-dismissable" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger alert-dismissable" role="alert"><%= get_flash(@conn, :error) %></p>
+    <%= render Handiman.SharedView, "nav.html" %>
+    <div class="fluid-container">
+      
+      <%= if get_flash(@conn, :info) do %>
+        <div class="alert alert-info alert-dismissable col-md-6 col-md-offset-3" role="alert"><%= get_flash(@conn, :info) %>
+           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+      <% end %>
+
+      <%= if get_flash(@conn, :error) do %>
+        <div class="alert alert-danger alert-dismissable col-md-6 col-md-offset-3" role="alert"><%= get_flash(@conn, :error) %>
+           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+      <% end %>
 
       <%= @inner %>
 

@@ -103,4 +103,13 @@ defmodule Handiman.User do
     query = from u in Handiman.User, join: r in assoc(u, :rounds), where: r.user_id == "#{user_id}", select: count(r.id)
     Repo.one(query)
   end
+
+  def with_preloaded_assoc(user_id) do
+    query = from u in Handiman.User,
+            join: r in assoc(u, :rounds),
+            join: t in assoc(r, :tee),
+            join: c in assoc(t, :course),
+            where: u.id == "#{user_id}", preload: [rounds: {r, tee: {t, course: c}}]
+    user = Repo.one(query)
+  end
 end
