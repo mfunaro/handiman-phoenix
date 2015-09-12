@@ -110,6 +110,6 @@ defmodule Handiman.User do
             join: t in assoc(r, :tee),
             join: c in assoc(t, :course),
             where: u.id == "#{user_id}", preload: [rounds: {r, tee: {t, course: c}}]
-    user = Repo.one(query)
+    Repo.one(query)
   end
 end

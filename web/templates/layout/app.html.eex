@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
   <body>
-    <%= render Handiman.SharedView, "nav.html" %>
+    <%= render Handiman.SharedView, "nav.html", conn: @conn%>
     <div class="fluid-container">
-      
+
       <%= if get_flash(@conn, :info) do %>
         <div class="alert alert-info alert-dismissable col-md-6 col-md-offset-3" role="alert"><%= get_flash(@conn, :info) %>
            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
