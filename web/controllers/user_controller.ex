@@ -29,13 +29,15 @@ defmodule Handiman.UserController do
   end
 
   def show(conn, %{"id" => id}) do
+    changeset = Handiman.Round.changeset(%Handiman.Round{})
     user = User.with_preloaded_assoc(id)
+    {courses, tees} = retrieve_courses_and_tees
     case User.round_count(id) |> User.calculate_handicap(id) do
-      {:ok, handicap} -> render(conn, "show.html", user: user, handicap: handicap)
+      {:ok, handicap} -> render(conn, "show.html", changeset: changeset, user: user, handicap: handicap, courses: courses, tees: tees)
       {:error, error} ->
         conn
           |> put_flash(:info, error)
-          |> render("show.html", user: user, handicap: "N/A")
+          |> render("show.html",changeset: changeset, user: user, handicap: "N/A", courses: courses, tees: tees)
     end
   end
 
@@ -69,5 +71,13 @@ defmodule Handiman.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
+  end
+
+  defp retrieve_courses_and_tees() do
+    course_query = from c in Handiman.Course, select: %{"course_id"=>c.id, "course_name"=>c.name}
+    tee_query = from t in Handiman.Tee, select: %{"tee_id"=>t.id, "course_id"=>t.course_id}
+    tees = Repo.all(tee_query)
+    courses = Repo.all(course_query)
+    {courses, tees}
   end
 end

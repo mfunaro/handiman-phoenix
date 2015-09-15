@@ -33,12 +33,11 @@ defmodule Handiman.RoundController do
     diff = Round.calc_differential(round_params["score"], tee.usga_course_rating, tee.slope_rating)
       |> Float.round(2)
     changeset = Round.changeset(%Round{}, Map.merge(round_params, %{"user_id"=> user_id, "differential"=> diff}))
-
     case Repo.insert(changeset) do
       {:ok, round} ->
         conn
         |> put_flash(:info, "Round created successfully.")
-        |> redirect(to: user_round_path(conn, :index, round.user_id))
+        |> redirect(to: user_path(conn, :show, round.user_id))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset, tees: tees, courses: courses)
     end
@@ -80,7 +79,7 @@ defmodule Handiman.RoundController do
 
     conn
     |> put_flash(:info, "Round deleted successfully.")
-    |> redirect(to: user_round_path(conn, :index, round.user))
+    |> redirect(to: user_path(conn, :show, round.user_id))
   end
 
   defp retrieve_courses_and_tees() do
